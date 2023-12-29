@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        #app {
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333333;
+        }
+
+        button {
+            background-color: black;
+            color: #ffffff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: crimson;
+        }
+
+        #blocks {
+            text-align: left;
+        }
+
+        .block {
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <h1>Simple Blockchain App</h1>
+        <button onclick="mineBlock()">Mine Block</button>
+        <div id="blocks">
+            <!-- Blockchain blocks will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        // Simple representation of a blockchain
+        let blockchain = [];
+
+        // Function to create a new block
+        function createBlock(previousHash, data) {
+            const block = {
+                index: blockchain.length + 1,
+                timestamp: new Date().toLocaleString(),
+                previousHash,
+                data,
+                hash: "fake-hash" + (blockchain.length + 1)
+            };
+
+            blockchain.push(block);
+            displayBlocks();
+        }
+
+        // Function to mine a new block
+        function mineBlock() {
+            const previousBlock = blockchain[blockchain.length - 1];
+            const previousHash = previousBlock ? previousBlock.hash : "0";
+            const data = "Block " + blockchain.length;
+
+            createBlock(previousHash, data);
+        }
+
+        // Function to display blocks on the interface
+        function displayBlocks() {
+            const blocksContainer = document.getElementById("blocks");
+            blocksContainer.innerHTML = "";
+
+            blockchain.forEach((block) => {
+                const blockElement = document.createElement("div");
+                blockElement.className = "block";
+                blockElement.innerHTML = `
+                    <p><strong>Block #${block.index}</strong></p>
+                    <p><strong>Timestamp:</strong> ${block.timestamp}</p>
+                    <p><strong>Previous Hash:</strong> ${block.previousHash}</p>
+                    <p><strong>Data:</strong> ${block.data}</p>
+                    <p><strong>Hash:</strong> ${block.hash}</p>
+                `;
+                blocksContainer.appendChild(blockElement);
+            });
+        }
+
+        // Initial display of blocks
+        displayBlocks();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.6.0/dist/web3.min.js"></script>
+
+</body>
+
+</html>
